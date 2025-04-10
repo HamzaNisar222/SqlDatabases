@@ -82,3 +82,45 @@ Select date(payment_date) ,sum(amount)from payment group by date(payment_date) o
 	select rating , avg(replacement_cost) from film group by rating order by avg(replacement_cost);
 	--problem 3: we want give away cupons to the customers who have spent the most money. how much has each customer spent and who gets the cupon?
 	select customer_id, sum(amount) from payment group by customer_id order by sum(amount) desc limit 5;
+
+-- 3 HAVING CLAUSE 
+	-- it is used to filter the result of the group by clause
+	--  we can filter the results of simple column values with where clause 
+	--  we can filter the results of aggregate functions with having clause 
+	--  we can use both where and having clause in the same query 
+
+	-- Examples
+	-- Selects the customer_id and the sum of the amount from the payment table and orders the result by the sum of the amount in descending order
+	-- This is the example of the group by clause with the sum function
+	-- Question answered : How much did each customer spend?	
+	Select customer_id,sum(amount) from payment group by customer_id having sum(amount)>100 order by sum(amount) desc  
+
+	--  we can use both where and having clause in the same query 
+	Select customer_id,sum(amount) from payment where customer_id in (1,2) group by customer_id having sum(amount)>100 order by sum(amount) desc  
+
+	-- Selects the store_id and the count of the customer_id from the customer table and orders the result by the count of the customer_id in descending order
+	-- This is the example of the group by clause with the count function
+	-- Question answered : How many customers are there in each store?
+	Select store_id, count(customer_id) from customer group by store_id having  count(customer_id)>300;
+
+	-- Challanges
+	-- Selects the customer_id and the count of the payment_id from the payment table and orders the result by the count of the payment_id in descending order
+	-- This is the example of the group by clause with the count function
+	-- Question answered : How many payments did each customer make?
+	Select customer_id,count(*) from payment group by customer_id having count(*)>=40;
+
+	-- Question answered : How many payments are >100 and which customer made with staff member 2 only?
+	Select customer_id,sum(amount) from payment where staff_id=2 group by customer_id having sum(amount)>100;
+
+
+
+
+
+
+	-- ASSEMENT TEST 1 ANSWERS 
+--1
+	Select customer_id,sum(amount) from payment where staff_id=2 group by customer_id having sum(amount) >= 110;
+--2
+	Select count(*) from film where title ilike 'j%'; 
+--3
+	Select first_name,last_name from customer where first_name ilike 'e%' and address_id<500 ORDER BY customer_id DESC LIMIT 1;
